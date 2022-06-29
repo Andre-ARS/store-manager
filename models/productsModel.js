@@ -1,8 +1,9 @@
-const connection = require('../helpers');
+const { connection } = require('../helpers');
 
 const getAll = async () => {
-  const query = 'SELECT * FROM StoreManager.sales_products;';
-  const [result] = await connection.execute(query);
+  const [result] = await connection.execute(
+    'SELECT * FROM StoreManager.products',
+  );
 
   return result;
 };

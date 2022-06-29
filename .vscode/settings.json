@@ -32,5 +32,12 @@
     ".npmrc":true
   },
   // barrelr
-  "barrelr.lineEnding": "LF"
+  "barrelr.lineEnding": "LF",
+  "conventionalCommits.scopes": [
+    "app.js",
+    "routes",
+    "productsModel",
+    "productsService",
+    "productsController"
+  ]
 }
