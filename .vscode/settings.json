@@ -38,6 +38,7 @@
     "routes",
     "productsModel",
     "productsService",
-    "productsController"
+    "productsController",
+    "tests"
   ]
 }
