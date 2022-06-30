@@ -6,4 +6,12 @@ const getAll = async () => {
   return products;
 };
 
-module.exports = { getAll };
+const getById = async (id) => {
+  const product = await productsModel.getById(id);
+
+  if (!product) return { code: 404, result: { message: 'Product not found' } }; 
+
+  return { code: 200, result: product };
+};
+
+module.exports = { getAll, getById };
