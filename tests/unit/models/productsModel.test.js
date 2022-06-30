@@ -8,11 +8,11 @@ const { productsModel } = require('../../../models');
 describe('Lista todos produtos', () => {
 
   before(async () => {
-    const execute = [
+    const execute = [[
       { id: 1, name: "Martelo de Thor" },
       { id: 2, name: "Traje de encolhimento" },
       { id: 3, name: "Escudo do Capitão América" },
-    ]; 
+    ]]; 
 
     sinon.stub(connection, "execute").resolves(execute);
   });
@@ -32,7 +32,7 @@ describe('Lista todos produtos', () => {
 
 describe('Busca produto pelo id', () => {
   before(async () => {
-    const execute = { id: 1, name: "Martelo de Thor" };
+    const execute = [[{ id: 1, name: "Martelo de Thor" }]];
 
     sinon.stub(connection, "execute").resolves(execute);
   });
