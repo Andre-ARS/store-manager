@@ -6,4 +6,11 @@ const getAll = async (_req, res) => {
   res.status(200).json(products);
 };
 
-module.exports = { getAll };
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const { code, result } = await productsService.getById(id);
+
+  res.status(code).json(result);
+};
+
+module.exports = { getAll, getById };
