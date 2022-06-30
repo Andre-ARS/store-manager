@@ -4,10 +4,10 @@ const { expect } = require("chai");
 const { productsService } = require("../../../services");
 const { productsController } = require("../../../controllers");
 
-describe("Lista todos produtos", () => {
+describe("Tests the function getAll in controllers", () => {
   const req = {};
   const res = {};
-  
+
   before(() => {
     const responseOk = [
       { id: 1, name: "Martelo de Thor" },
@@ -15,10 +15,8 @@ describe("Lista todos produtos", () => {
       { id: 3, name: "Escudo do Capitão América" },
     ];
 
-    res.status = sinon.stub()
-      .returns(res);
-    res.json = sinon.stub()
-      .returns();
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
 
     sinon.stub(productsService, "getAll").resolves({
       code: 200,
@@ -30,8 +28,8 @@ describe("Lista todos produtos", () => {
     productsService.getAll.restore();
   });
 
-  describe("quando listado com sucesso", () => {
-    it("Retorna o codigo 200", async () => {
+  describe("Once succedes", () => {
+    it("Returns the status code 200", async () => {
       await productsController.getAll(req, res);
 
       expect(res.status.calledWith(200)).to.be.equal(true);
@@ -39,17 +37,17 @@ describe("Lista todos produtos", () => {
   });
 });
 
-describe("Busca produto pelo id", () => {
+describe("Tests the function getById in controllers", () => {
   const req = {};
   const res = {};
-  
+
   before(() => {
     const product = {
       code: 200,
       result: { id: 1, name: "Martelo de Thor" },
     };
-    
-    req.params = '1'
+
+    req.params = "1";
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns();
 
@@ -60,11 +58,45 @@ describe("Busca produto pelo id", () => {
     productsService.getById.restore();
   });
 
-  describe("quando o id existe", () => {
-    it("Retorna o codigo 200", async () => {
+  describe("If the id exists", () => {
+    it("Returns the status code 200", async () => {
       await productsController.getById(req, res);
 
       expect(res.status.calledWith(200)).to.be.equal(true);
     });
   });
 });
+
+describe('Tests the function create in controllers', () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    const responseOk = {
+      id: 4,
+      name: 'produto x'
+    }
+
+    req.body = { name: 'produto x' }
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(productsService, "create").resolves({
+      code: 201,
+      result: responseOk,
+    });
+  });
+
+  after(async () => {
+    productsService.create.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 201", async () => {
+      await productsController.create(req, res);
+
+      expect(res.status.calledWith(201)).to.be.equal(true);
+    });
+  });
+});
+
