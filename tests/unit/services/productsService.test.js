@@ -23,7 +23,7 @@ describe("Lista todos produtos", () => {
     it("retorna um array", async () => {
       const response = await productsService.getAll();
 
-      expect(response).to.be.a("array");
+      expect(response.result).to.be.a("array");
     });
   });
 });

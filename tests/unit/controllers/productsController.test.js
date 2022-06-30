@@ -20,7 +20,10 @@ describe("Lista todos produtos", () => {
     res.json = sinon.stub()
       .returns();
 
-    sinon.stub(productsService, "getAll").resolves(responseOk);
+    sinon.stub(productsService, "getAll").resolves({
+      code: 200,
+      result: responseOk,
+    });
   });
 
   after(async () => {
