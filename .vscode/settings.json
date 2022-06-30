@@ -40,6 +40,7 @@
     "productsService",
     "productsController",
     "tests",
-    "salesModel"
+    "salesModel",
+    "salesService"
   ]
 }
