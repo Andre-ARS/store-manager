@@ -5,7 +5,7 @@ const { expect } = require('chai');
 const { connection } = require('../../../helpers');
 const { productsModel } = require('../../../models');
 
-describe('Lista todos produtos', () => {
+describe('Tests the function getAll in models', () => {
 
   before(async () => {
     const execute = [[
@@ -21,8 +21,8 @@ describe('Lista todos produtos', () => {
     connection.execute.restore();
   });
 
-  describe('quando listado com sucesso', () => {
-    it('retorna um array', async () => {
+  describe('Once succedes', () => {
+    it('Returns an array', async () => {
       const response = await productsModel.getAll();
 
       expect(response).to.be.a('array');
@@ -30,7 +30,7 @@ describe('Lista todos produtos', () => {
   });
 });
 
-describe('Busca produto pelo id', () => {
+describe("Tests the function getById in models", () => {
   before(async () => {
     const execute = [[{ id: 1, name: "Martelo de Thor" }]];
 
@@ -41,11 +41,31 @@ describe('Busca produto pelo id', () => {
     connection.execute.restore();
   });
 
-  describe("quando o id existe", () => {
-    it("retorna o objeto do produto", async () => {
+  describe("If the id exists", () => {
+    it("Returns the product's object", async () => {
       const response = await productsModel.getById(1);
 
       expect(response).to.be.a("object");
+    });
+  });
+});
+
+describe('Tests the function create in models', () => {
+  before(async () => {
+    const execute = [{ insertId: 4 }];
+
+    sinon.stub(connection, "execute").resolves(execute);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  describe('Once succeeds', () => {
+    it('Returns an object', async() => {
+      const response = await productsModel.create('produto x')
+
+      expect(response).to.be.a('object');
     });
   });
 });
