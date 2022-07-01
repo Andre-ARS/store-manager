@@ -1,5 +1,22 @@
 const { productsModel, salesModel } = require('../models');
 
+const getAllSales = async () => {
+  const sales = await salesModel.getAllSales();
+
+  return { code: 200, result: sales };
+};
+
+const getSaleById = async (id) => {
+  const sales = await salesModel.getAllSales();
+  const saleIds = sales.map(({ saleId }) => saleId);
+
+  if (!saleIds.includes(id)) return { code: 404, result: { message: 'Sale not found' } };
+
+  const sale = await salesModel.getSaleById(id);
+
+  return { code: 200, result: sale };
+};
+
 const isValid = async (saleInfo) => {
   const products = await productsModel.getAll();
   const productIds = products.map(({ id }) => id);
@@ -35,10 +52,4 @@ const addSale = async (saleInfo) => {
   return { code: 201, result: sale };
 };
 
-const getAllSales = async () => {
-  const sales = await salesModel.getAllSales();
-
-  return { code: 200, result: sales };
-};
-
-module.exports = { addSale, getAllSales };
+module.exports = { addSale, getAllSales, getSaleById };
