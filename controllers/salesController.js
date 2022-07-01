@@ -8,4 +8,10 @@ const addSale = async (req, res) => {
   res.status(code).json(result);
 };
 
-module.exports = { addSale };
+const getAllSales = async (_req, res) => {
+  const { code, result } = await salesService.getAllSales();
+
+  res.status(code).json(result);
+};
+
+module.exports = { addSale, getAllSales };
