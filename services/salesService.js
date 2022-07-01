@@ -35,4 +35,10 @@ const addSale = async (saleInfo) => {
   return { code: 201, result: sale };
 };
 
-module.exports = { addSale };
+const getAllSales = async () => {
+  const sales = await salesModel.getAllSales();
+
+  return { code: 200, result: sales };
+};
+
+module.exports = { addSale, getAllSales };
