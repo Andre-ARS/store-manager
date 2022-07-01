@@ -1,0 +1,121 @@
+const sinon = require("sinon");
+const { expect } = require("chai");
+
+const { salesService } = require("../../../services");
+const { salesController } = require("../../../controllers");
+
+describe("Tests the function addSale in controllers", () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    const responseOk = {
+      id: 4,
+      itemsSold: [
+        {
+          productId: 3,
+          quantity: 5,
+        },
+        {
+          productId: 2,
+          quantity: 5,
+        },
+      ],
+    };
+
+    req.body = [
+      {
+        productId: 3,
+        quantity: 5,
+      },
+      {
+        productId: 2,
+        quantity: 5,
+      },
+    ];
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, "addSale").resolves({
+      code: 201,
+      result: responseOk,
+    });
+  });
+
+  after(async () => {
+    salesService.addSale.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 201", async () => {
+      await salesController.addSale(req, res);
+
+      expect(res.status.calledWith(201)).to.be.equal(true);
+    });
+  });
+});
+
+// describe("Tests the function getById in controllers", () => {
+//   const req = {};
+//   const res = {};
+
+//   before(() => {
+//     const product = {
+//       code: 200,
+//       result: { id: 1, name: "Martelo de Thor" },
+//     };
+
+//     req.params = "1";
+//     res.status = sinon.stub().returns(res);
+//     res.json = sinon.stub().returns();
+
+//     sinon.stub(salesService, "getById").resolves(product);
+//   });
+
+//   after(async () => {
+//     productsService.getById.restore();
+//   });
+
+//   describe("If the id exists", () => {
+//     it("Returns the status code 200", async () => {
+//       await productsController.getById(req, res);
+
+//       expect(res.status.calledWith(200)).to.be.equal(true);
+//     });
+//   });
+// });
+
+// describe('Tests the function create in controllers', () => {
+//   const req = {};
+//   const res = {};
+
+//   before(() => {
+//     const responseOk = {
+//       id: 4,
+//       name: 'produto x'
+//     }
+
+//     req.body = { name: 'produto x' }
+//     res.status = sinon.stub().returns(res);
+//     res.json = sinon.stub().returns();
+
+//     sinon.stub(productsService, "create").resolves({
+//       code: 201,
+//       result: responseOk,
+//     });
+//   });
+
+//   after(async () => {
+//     productsService.create.restore();
+//   });
+
+//   describe("Once succedes", () => {
+//     it("Returns the status code 201", async () => {
+//       await productsController.create(req, res);
+
+//       expect(res.status.calledWith(201)).to.be.equal(true);
+//     });
+//   });
+// });
+
