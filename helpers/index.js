@@ -1,3 +1,4 @@
 const connection = require('./connection');
+const isValid = require('./isValid');
 
-module.exports = { connection };
+module.exports = { connection, isValid };
