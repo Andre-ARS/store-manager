@@ -55,3 +55,45 @@ describe("Tests the function addSale in controllers", () => {
     });
   });
 });
+
+describe("Tests the function getAllSales in controllers", () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    const responseOk = [
+      {
+        saleId: 1,
+        date: "2022-07-03T02:21:54.000Z",
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        saleId: 1,
+        date: "2022-07-03T02:21:54.000Z",
+        productId: 2,
+        quantity: 10,
+      },
+    ];
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, "getAllSales").resolves({
+      code: 200,
+      result: responseOk,
+    });
+  });
+
+  after(async () => {
+    salesService.getAllSales.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 200", async () => {
+      await salesController.getAllSales(req, res);
+
+      expect(res.status.calledWith(200)).to.be.equal(true);
+    });
+  });
+});
