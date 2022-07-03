@@ -124,3 +124,36 @@ describe("Tests the function addSale in services", () => {
     });
   });
 });
+
+describe("Tests the function getAllSales in services", () => {
+  before(async () => {
+    const execute = [
+      {
+        saleId: 1,
+        date: "2022-07-03T02:21:54.000Z",
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        saleId: 1,
+        date: "2022-07-03T02:21:54.000Z",
+        productId: 2,
+        quantity: 10,
+      },
+    ];
+
+    sinon.stub(salesModel, "getAllSales").resolves(execute);
+  });
+
+  after(async () => {
+    salesModel.getAllSales.restore();
+  });
+  
+  describe("Once succeeds", () => {
+    it('returns an Array', async () => {
+      const { code, result } = await salesService.getAllSales();
+
+      expect(code).to.be.equal(200);
+    });
+  });
+});
