@@ -7,12 +7,9 @@ const getAllSales = async () => {
 };
 
 const getSaleById = async (id) => {
-  const sales = await salesModel.getAllSales();
-  const saleIds = sales.map(({ saleId }) => saleId);
-
-  if (!saleIds.includes(id)) return { code: 404, result: { message: 'Sale not found' } };
-
   const sale = await salesModel.getSaleById(id);
+  
+  if (sale.length < 1) return { code: 404, result: { message: 'Sale not found' } };
 
   return { code: 200, result: sale };
 };
