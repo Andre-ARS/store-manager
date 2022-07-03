@@ -27,7 +27,7 @@ describe("Tests the function addSale in services", () => {
   after(async () => {
     productsModel.getAll.restore();
   });
-  
+
   describe("Validates the request", () => {
     it('the "productId" can\'t be undefined', async () => {
       const saleInfo = [
@@ -54,7 +54,7 @@ describe("Tests the function addSale in services", () => {
       expect(code).to.be.equal(404);
       expect(result.message).to.be.equal("Product not found");
     });
-    
+
     it('the "quantity" can\'t be undefined', async () => {
       const saleInfo = [
         {
@@ -66,7 +66,7 @@ describe("Tests the function addSale in services", () => {
       expect(code).to.be.equal(400);
       expect(result.message).to.be.equal('"quantity" is required');
     });
-    
+
     it('the "quantity" can\'t be less than 1', async () => {
       const saleInfo = [
         {
@@ -75,12 +75,13 @@ describe("Tests the function addSale in services", () => {
         },
       ];
       const { code, result } = await salesService.addSale(saleInfo);
-  
+
       expect(code).to.be.equal(422);
-      expect(result.message).to.be.equal('"quantity" must be greater than or equal to 1');
+      expect(result.message).to.be.equal(
+        '"quantity" must be greater than or equal to 1'
+      );
     });
   });
-  
 
   before(async () => {
     const execute = {
@@ -105,21 +106,21 @@ describe("Tests the function addSale in services", () => {
   });
 
   describe("Once succedes", () => {
-    const saleInfo =   [
+    const saleInfo = [
       {
-        "productId": 3,
-        "quantity": 5
+        productId: 3,
+        quantity: 5,
       },
       {
-        "productId": 2,
-        "quantity":5
-      }
-    ]
-  
+        productId: 2,
+        quantity: 5,
+      },
+    ];
+
     it("Returns an object", async () => {
       const { code, result } = await salesService.addSale(saleInfo);
 
-      expect(code).to.be.equal(201)
+      expect(code).to.be.equal(201);
       expect(result).to.be.a("object");
     });
   });
@@ -148,12 +149,52 @@ describe("Tests the function getAllSales in services", () => {
   after(async () => {
     salesModel.getAllSales.restore();
   });
-  
+
   describe("Once succeeds", () => {
-    it('returns an Array', async () => {
-      const { code, result } = await salesService.getAllSales();
+    it("returns the status code 200", async () => {
+      const { code } = await salesService.getAllSales();
 
       expect(code).to.be.equal(200);
     });
+  });
+});
+
+describe("Tests the function getSaleById in services", () => {
+  let execute = [
+    {
+      date: "2022-07-03T02:21:54.000Z",
+      productId: 1,
+      quantity: 5,
+    },
+    {
+      date: "2022-07-03T02:21:54.000Z",
+      productId: 2,
+      quantity: 10,
+    },
+  ];
+
+  sinon.stub(salesModel, "getSaleById").resolves(execute);
+
+  describe("Once succeeds", () => {
+    it("returns an Array, and the status code 200 ", async () => {
+      const { code, result } = await salesService.getSaleById(1);
+
+      expect(code).to.be.equal(200);
+      expect(result).to.be.a("array");
+    });
+    salesModel.getSaleById.restore();
+  });
+  execute = [];
+
+  sinon.stub(salesModel, "getSaleById").resolves(execute);
+
+  describe("Once fails", () => {
+    it("returns the status code 404", async () => {
+      const { code, result } = await salesService.getSaleById(5);
+
+      expect(code).to.be.equal(404);
+      expect(result.message).to.be.equal("Sale not found");
+    });
+    salesModel.getSaleById.restore();
   });
 });
