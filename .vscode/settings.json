@@ -42,6 +42,7 @@
     "tests",
     "salesModel",
     "salesService",
-    "salesController"
+    "salesController",
+    "helpers"
   ]
 }
