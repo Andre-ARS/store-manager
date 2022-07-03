@@ -97,3 +97,44 @@ describe("Tests the function getAllSales in controllers", () => {
     });
   });
 });
+
+describe("Tests the function getSaleById in controllers", () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    const responseOk = [
+      {
+        date: "2022-07-03T02:21:54.000Z",
+        productId: 1,
+        quantity: 5,
+      },
+      {
+        date: "2022-07-03T02:21:54.000Z",
+        productId: 2,
+        quantity: 10,
+      },
+    ];
+
+    req.params = 1;
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, "getSaleById").resolves({
+      code: 200,
+      result: responseOk,
+    });
+  });
+
+  after(async () => {
+    salesService.getSaleById.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 200", async () => {
+      await salesController.getSaleById(req, res);
+
+      expect(res.status.calledWith(200)).to.be.equal(true);
+    });
+  });
+});
