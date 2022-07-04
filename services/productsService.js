@@ -13,10 +13,9 @@ const getById = async (id) => {
   if (!productIds.includes(id)) {
     return { code: 404, result: { message: 'Product not found' } };
   }
-  
+
   const product = await productsModel.getById(id);
 
-  console.log(product);
   return { code: 200, result: product };
 };
 

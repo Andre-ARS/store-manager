@@ -100,7 +100,6 @@ describe('Tests the function create in controllers', () => {
   });
 });
 
-
 describe('Tests the function update in controllers', () => {
   const req = {};
   const res = {};
@@ -131,6 +130,34 @@ describe('Tests the function update in controllers', () => {
       await productsController.update(req, res);
 
       expect(res.status.calledWith(200)).to.be.equal(true);
+    });
+  });
+});
+
+describe('Tests the function exclude in controllers', () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+
+    req.params = 1
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(productsService, "exclude").resolves({
+      code: 204,
+    });
+  });
+
+  after(async () => {
+    productsService.exclude.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 204", async () => {
+      await productsController.exclude(req, res);
+
+      expect(res.status.calledWith(204)).to.be.equal(true);
     });
   });
 });
