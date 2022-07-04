@@ -3,6 +3,7 @@ const { expect } = require("chai");
 
 const { connection } = require("../../../helpers");
 const { salesModel } = require("../../../models");
+const { before, after } = require("mocha");
 
 describe("Tests the function addSale in models", () => {
   before(async () => {
@@ -71,45 +72,57 @@ describe("Tests the function getAllSales in models", () => {
 });
 
 describe("Tests the function getSaleById in models", () => {
-  let execute = [
-    [
-      {
-        date: "2022-07-03T02:21:54.000Z",
-        productId: 1,
-        quantity: 5,
-      },
-      {
-        date: "2022-07-03T02:21:54.000Z",
-        productId: 2,
-        quantity: 10,
-      },
-    ],
-  ];
-
-  sinon.stub(connection, "execute").resolves(execute);
+  describe("success cases", () => {
+    before(async () => {
+      let execute = [[
+        {
+          date: "2022-07-03T02:21:54.000Z",
+          productId: 1,
+          quantity: 5,
+        },
+        {
+          date: "2022-07-03T02:21:54.000Z",
+          productId: 2,
+          quantity: 10,
+        },
+      ]];
   
-  describe("If the id exists", () => {
-    it("Returns an array with length greater than 0", async () => {
-      const response = await salesModel.getSaleById(1);
-      
-      expect(response).to.be.a("array");
-      expect(response.length > 0).to.be.equal(true);
+      sinon.stub(connection, "execute").resolves(execute);
     });
-    connection.execute.restore();
+  
+    after(async () => {
+      connection.execute.restore();
+    });
+  
+    describe("If the id exists", () => {
+      it("Returns an array with length greater than 0", async () => {
+        const response = await salesModel.getSaleById(1);
+  
+        expect(response).to.be.a("array");
+        expect(response).to.have.length.above(0);
+      });
+    });
   });
-
   
-  execute = [[]];
-
-  sinon.stub(connection, "execute").resolves(execute);
-
-  describe("If the id don't exists", () => {
-    it("Returns an empty array", async () => {
-      const response = await salesModel.getSaleById(5);
-      
-      expect(response).to.be.a("array");
-      expect(response.length > 0).to.be.equal(false);
+  describe("Fail cases", () => {
+    before(async () => {
+      let execute = [[]];
+  
+      sinon.stub(connection, "execute").resolves(execute);
     });
-    connection.execute.restore();
+  
+    after(async () => {
+      connection.execute.restore();
+    });
+  
+    describe("If the id don't exists", () => {
+      it("Returns an empty array", async () => {
+        const response = await salesModel.getSaleById(5);
+    
+        expect(response).to.be.a("array");
+        expect(response).to.have.length.below(1);
+      });
+    });
   });
 });
+
