@@ -49,7 +49,9 @@ const exclude = async (id) => {
   const query = `DELETE FROM StoreManager.products
   WHERE id = ?`;
 
-  await connection.execute(query, [id]);
+  const [{ affectedRows }] = await connection.execute(query, [id]);
+
+  return affectedRows;
 };
 
 module.exports = { getAll, getById, create, update, exclude };
