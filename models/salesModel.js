@@ -48,7 +48,7 @@ const excludeSale = async (id) => {
   const query = `DELETE FROM StoreManager.sales
   WHERE id = ?`;
 
-  const [{ affectedRows }] = connection.execute(query, [id]);
+  const [{ affectedRows }] = await connection.execute(query, [id]);
 
   return affectedRows;
 };
