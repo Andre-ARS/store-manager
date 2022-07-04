@@ -29,4 +29,12 @@ const update = async (req, res) => {
   res.status(code).json(result);
 };
 
-module.exports = { getAll, getById, create, update };
+const exclude = async (req, res) => {
+  const { id } = req.params;
+
+  const { code, result } = await productsService.exclude(Number(id));
+
+  res.status(code).json(result);
+};
+
+module.exports = { getAll, getById, create, update, exclude };
