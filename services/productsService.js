@@ -7,10 +7,16 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
+  const products = await productsModel.getAll();
+  const productIds = products.map(({ id: productId }) => productId);
+
+  if (!productIds.includes(id)) {
+    return { code: 404, result: { message: 'Product not found' } };
+  }
+  
   const product = await productsModel.getById(id);
 
-  if (!product) return { code: 404, result: { message: 'Product not found' } };
-
+  console.log(product);
   return { code: 200, result: product };
 };
 
