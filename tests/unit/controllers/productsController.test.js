@@ -100,3 +100,37 @@ describe('Tests the function create in controllers', () => {
   });
 });
 
+
+describe('Tests the function update in controllers', () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    const responseOk = {
+      id: 1,
+      name: 'produto x'
+    }
+
+    req.params = 1
+    req.body = { name: 'produto x' }
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(productsService, "update").resolves({
+      code: 200,
+      result: responseOk,
+    });
+  });
+
+  after(async () => {
+    productsService.update.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 200", async () => {
+      await productsController.update(req, res);
+
+      expect(res.status.calledWith(200)).to.be.equal(true);
+    });
+  });
+});
