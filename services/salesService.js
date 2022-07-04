@@ -10,7 +10,9 @@ const getAllSales = async () => {
 const getSaleById = async (id) => {
   const sale = await salesModel.getSaleById(id);
 
-  if (sale.length < 1) { return { code: 404, result: { message: 'Sale not found' } }; }
+  if (sale.length < 1) {
+    return { code: 404, result: { message: 'Sale not found' } };
+  }
 
   return { code: 200, result: sale };
 };
@@ -29,4 +31,16 @@ const addSale = async (saleInfo) => {
   return { code: 201, result: sale };
 };
 
-module.exports = { addSale, getAllSales, getSaleById };
+const delSale = async (id) => {
+  const sale = await salesModel.getSaleById(id);
+
+  if (sale.length < 1) {
+    return { code: 404, result: { message: 'Sale not found' } };
+  }
+
+  await salesModel.delSale(id);
+
+  return { code: 204 };
+};
+
+module.exports = { addSale, getAllSales, getSaleById, delSale };
