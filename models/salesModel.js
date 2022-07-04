@@ -44,7 +44,7 @@ const addSale = async (saleInfo) => {
   };
 };
 
-const delSale = async (id) => {
+const excludeSale = async (id) => {
   const query = `DELETE FROM StoreManager.sales
   WHERE id = ?`;
 
@@ -53,4 +53,4 @@ const delSale = async (id) => {
   return affectedRows;
 };
 
-module.exports = { addSale, getAllSales, getSaleById, delSale };
+module.exports = { addSale, getAllSales, getSaleById, excludeSale };

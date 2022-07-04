@@ -31,16 +31,16 @@ const addSale = async (saleInfo) => {
   return { code: 201, result: sale };
 };
 
-const delSale = async (id) => {
+const excludeSale = async (id) => {
   const sale = await salesModel.getSaleById(id);
 
   if (sale.length < 1) {
     return { code: 404, result: { message: 'Sale not found' } };
   }
 
-  await salesModel.delSale(id);
+  await salesModel.excludeSale(id);
 
   return { code: 204 };
 };
 
-module.exports = { addSale, getAllSales, getSaleById, delSale };
+module.exports = { addSale, getAllSales, getSaleById, excludeSale };
