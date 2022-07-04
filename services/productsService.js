@@ -47,4 +47,17 @@ const update = async (id, name) => {
   return { code: 200, result: product };
 };
 
-module.exports = { getAll, getById, create, update };
+const exclude = async (id) => {
+  const products = await productsModel.getAll();
+  const productIds = products.map(({ id: productId }) => productId);
+
+  if (!productIds.includes(id)) {
+    return { code: 404, result: { message: 'Product not found' } };
+  }
+
+  await productsModel.exclude(id);
+
+  return { code: 204 };
+};
+
+module.exports = { getAll, getById, create, update, exclude };
