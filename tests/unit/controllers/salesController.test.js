@@ -138,3 +138,30 @@ describe("Tests the function getSaleById in controllers", () => {
     });
   });
 });
+
+describe("Tests the function excludeSale in controllers", () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    req.params = 1;
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, "excludeSale").resolves({
+      code: 204,
+    });
+  });
+
+  after(async () => {
+    salesService.excludeSale.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 204", async () => {
+      await salesController.excludeSale(req, res);
+
+      expect(res.status.calledWith(204)).to.be.equal(true);
+    });
+  });
+});
