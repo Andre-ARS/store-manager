@@ -191,7 +191,7 @@ describe("Tests the function getSaleById in services", () => {
       });
     });
   });
-  
+
   describe("fails cases", () => {
     before(async () => {
       const execute = [];
@@ -206,10 +206,76 @@ describe("Tests the function getSaleById in services", () => {
     describe("Once fails", () => {
       it("returns the status code 404", async () => {
         const { code, result } = await salesService.getSaleById(5);
-  
+
         expect(code).to.be.equal(404);
         expect(result.message).to.be.equal("Sale not found");
       });
     });
+  });
+});
+
+describe("Tests the function excludeSale in services", () => {
+  describe('success cases', () => {
+    before(async () => {
+      const response = {};
+  
+      const sale = [
+        {
+          date: "2022-07-04T20:54:41.000Z",
+          productId: 1,
+          quantity: 5,
+        },
+        {
+          date: "2022-07-04T20:54:41.000Z",
+          productId: 2,
+          quantity: 10,
+        },
+      ];
+  
+      sinon.stub(salesModel, "excludeSale").resolves(response);
+  
+      sinon.stub(salesModel, "getSaleById").resolves(sale);
+    });
+  
+    after(async () => {
+      salesModel.excludeSale.restore();
+      salesModel.getSaleById.restore();
+    });
+
+    describe("Once succeeds", () => {
+      it("returns the right status code", async () => {
+        const { code, result } = await salesService.excludeSale(1);
+  
+        expect(code).to.be.equal(204);
+        expect(result).to.be.undefined;
+      });
+    });
+    
+  });
+
+  describe('fail cases', () => {
+    before(async () => {
+      const response = {};
+  
+      const sale = [];
+  
+      sinon.stub(salesModel, "excludeSale").resolves(response);
+  
+      sinon.stub(salesModel, "getSaleById").resolves(sale);
+    });
+  
+    after(async () => {
+      salesModel.excludeSale.restore();
+      salesModel.getSaleById.restore();
+    });
+
+    describe("Validates the request", () => {
+      it("productId must exist", async () => {
+        const { code, result } = await salesService.excludeSale(5);
+  
+        expect(code).to.be.equal(404);
+        expect(result.message).to.be.equal("Sale not found");
+      });
+    });    
   });
 });
