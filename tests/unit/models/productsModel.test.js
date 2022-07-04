@@ -69,3 +69,23 @@ describe('Tests the function create in models', () => {
     });
   });
 });
+
+describe("Tests the function update in models", () => {
+  before(async () => {
+    const execute = [];
+
+    sinon.stub(connection, "execute").resolves(execute);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  describe("Once succeeds", () => {
+    it("Returns an object", async () => {
+      const response = await productsModel.update(1, "Martelo do Batman");
+
+      expect(response).to.be.a("object");
+    });
+  });
+});
