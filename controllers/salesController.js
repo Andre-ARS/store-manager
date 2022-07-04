@@ -21,4 +21,12 @@ const addSale = async (req, res) => {
   res.status(code).json(result);
 };
 
-module.exports = { addSale, getAllSales, getSaleById };
+const excludeSale = async (req, res) => {
+  const { id } = req.params;
+
+  const { code, result } = await salesService.excludeSale(Number(id));
+
+  res.status(code).json(result);
+};
+
+module.exports = { addSale, getAllSales, getSaleById, excludeSale };
