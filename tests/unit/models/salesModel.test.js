@@ -126,3 +126,22 @@ describe("Tests the function getSaleById in models", () => {
   });
 });
 
+describe("Tests the function excludeSale in models", () => {
+  before(async () => {
+    const execute = [{ affectedRows: 1 }];
+
+    sinon.stub(connection, "execute").resolves(execute);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  describe("Once succeeds", () => {
+    it("delets only the right sale", async () => {
+      const affectedRows = await salesModel.excludeSale(1);
+
+      expect(affectedRows).to.be.equal(1);
+    });
+  });
+});
