@@ -160,41 +160,56 @@ describe("Tests the function getAllSales in services", () => {
 });
 
 describe("Tests the function getSaleById in services", () => {
-  let execute = [
-    {
-      date: "2022-07-03T02:21:54.000Z",
-      productId: 1,
-      quantity: 5,
-    },
-    {
-      date: "2022-07-03T02:21:54.000Z",
-      productId: 2,
-      quantity: 10,
-    },
-  ];
+  describe("success cases", () => {
+    before(async () => {
+      const execute = [
+        {
+          date: "2022-07-03T02:21:54.000Z",
+          productId: 1,
+          quantity: 5,
+        },
+        {
+          date: "2022-07-03T02:21:54.000Z",
+          productId: 2,
+          quantity: 10,
+        },
+      ];
 
-  sinon.stub(salesModel, "getSaleById").resolves(execute);
-
-  describe("Once succeeds", () => {
-    it("returns an Array, and the status code 200 ", async () => {
-      const { code, result } = await salesService.getSaleById(1);
-
-      expect(code).to.be.equal(200);
-      expect(result).to.be.a("array");
+      sinon.stub(salesModel, "getSaleById").resolves(execute);
     });
-    salesModel.getSaleById.restore();
+
+    after(async () => {
+      salesModel.getSaleById.restore();
+    });
+
+    describe("Once succeeds", () => {
+      it("returns an Array, and the status code 200 ", async () => {
+        const { code, result } = await salesService.getSaleById(1);
+
+        expect(code).to.be.equal(200);
+        expect(result).to.be.a("array");
+      });
+    });
   });
-  execute = [];
+  
+  describe("fails cases", () => {
+    before(async () => {
+      const execute = [];
 
-  sinon.stub(salesModel, "getSaleById").resolves(execute);
-
-  describe("Once fails", () => {
-    it("returns the status code 404", async () => {
-      const { code, result } = await salesService.getSaleById(5);
-
-      expect(code).to.be.equal(404);
-      expect(result.message).to.be.equal("Sale not found");
+      sinon.stub(salesModel, "getSaleById").resolves(execute);
     });
-    salesModel.getSaleById.restore();
+
+    after(async () => {
+      salesModel.getSaleById.restore();
+    });
+
+    describe("Once fails", () => {
+      it("returns the status code 404", async () => {
+        const { code, result } = await salesService.getSaleById(5);
+  
+        expect(code).to.be.equal(404);
+        expect(result.message).to.be.equal("Sale not found");
+      });
+    });
   });
 });
