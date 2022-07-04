@@ -57,16 +57,16 @@ describe("Tests the function getById in services", () => {
 });
 
 describe("Tests the function create in services", () => {
-  describe('Valids the name', () => {
+  describe("Valids the name", () => {
     it("can't be undefined", async () => {
-      const { code, result } = await productsService.create('');
+      const { code, result } = await productsService.create("");
 
       expect(code).to.be.equal(400);
       expect(result.message).to.be.equal('"name" is required');
     });
 
-    it('must be at least 5 characters long', async () => {
-      const { code, result } = await productsService.create('prod');
+    it("must be at least 5 characters long", async () => {
+      const { code, result } = await productsService.create("prod");
 
       expect(code).to.be.equal(422);
       expect(result.message).to.be.equal(
@@ -74,7 +74,7 @@ describe("Tests the function create in services", () => {
       );
     });
   });
-  
+
   before(async () => {
     const product = {
       id: 4,
@@ -88,12 +88,80 @@ describe("Tests the function create in services", () => {
     productsModel.create.restore();
   });
 
-  describe('Once succeeds', () => {
-    it('returns the right status code', async () => {
-      const { code, result } = await productsService.create('produto x');
+  describe("Once succeeds", () => {
+    it("returns the right status code", async () => {
+      const { code, result } = await productsService.create("produto x");
 
       expect(code).to.be.equal(201);
-      expect(result).to.be.a('object');
+      expect(result).to.be.a("object");
+    });
+  });
+});
+
+describe("Tests the function update in services", () => {
+  describe("Validates the request", () => {
+    it("name can't be undefined", async () => {
+      const { code, result } = await productsService.update(1);
+
+      expect(code).to.be.equal(400);
+      expect(result.message).to.be.equal('"name" is required');
+    });
+
+    it("name must be at least 5 characters long", async () => {
+      const { code, result } = await productsService.update(1, "prod");
+
+      expect(code).to.be.equal(422);
+      expect(result.message).to.be.equal(
+        '"name" length must be at least 5 characters long'
+      );
+    });
+    
+    it("productId must exist", async () => {
+      const products = [
+        {
+          id: 1,
+          name: "Martelo de Thor",
+        },
+        {
+          id: 2,
+          name: "Traje de encolhimento",
+        },
+        {
+          id: 3,
+          name: "Escudo do Capitão América",
+        },
+      ];
+
+      sinon.stub(productsModel, "getAll").resolves(products);
+
+      const { code, result } = await productsService.update(5, "prod");
+
+      expect(code).to.be.equal(404);
+      expect(result.message).to.be.equal("Product not found");
+
+      productsModel.getAll.restore();
+    });
+  });
+
+  before(async () => {
+    const product = {
+      id: 4,
+      name: "produto x",
+    };
+
+    sinon.stub(productsModel, "update").resolves(product);
+  });
+
+  after(async () => {
+    productsModel.update.restore();
+  });
+
+  describe("Once succeeds", () => {
+    it("returns the right status code", async () => {
+      const { code, result } = await productsService.update(1 ,"produto x");
+
+      expect(code).to.be.equal(200);
+      expect(result).to.be.a("object");
     });
   });
 });
