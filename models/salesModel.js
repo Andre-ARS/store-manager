@@ -53,4 +53,22 @@ const excludeSale = async (id) => {
   return affectedRows;
 };
 
-module.exports = { addSale, getAllSales, getSaleById, excludeSale };
+const updateSale = async (id, changes) => {
+  const query = `UPDATE StoreManager.sales_products
+  SET quantity = ?
+  WHERE sale_id = ?
+  AND product_id = ?`;
+
+  changes.forEach(async ({ productId, quantity }) => {
+    await connection.execute(query, [quantity, id, productId]);    
+  });
+
+  const result = {
+    saleId: id,
+    itemsUpdated: changes,
+  };
+
+  return result;
+};
+
+module.exports = { addSale, getAllSales, getSaleById, excludeSale, updateSale };
