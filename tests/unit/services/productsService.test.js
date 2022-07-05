@@ -228,3 +228,26 @@ describe("Tests the function exclude in services", () => {
     });
   });
 });
+
+describe("Tests the function findByName in services", () => {
+  before(async () => {
+    const execute = [
+      { id: 3, name: "Escudo do Capitão América" },
+    ];
+
+    sinon.stub(productsModel, "findByName").resolves(execute);
+  });
+
+  after(async () => {
+    productsModel.findByName.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns an array", async () => {
+      const response = await productsService.findByName('Escudo');
+
+      expect(response.result).to.be.a("array");
+      expect(response.result[0].name).to.include("Escudo");
+    });
+  });
+});
