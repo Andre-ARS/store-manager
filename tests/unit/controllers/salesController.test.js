@@ -165,3 +165,56 @@ describe("Tests the function excludeSale in controllers", () => {
     });
   });
 });
+
+describe("Tests the function updateSale in controllers", () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    const responseOk = {
+      saleId: 1,
+      itemsUpdated: [
+        {
+          productId: 1,
+          quantity: 10,
+        },
+        {
+          productId: 2,
+          quantity: 50,
+        },
+      ],
+    };
+
+    req.params = 1;
+    req.body = [
+      {
+        productId: 1,
+        quantity: 10,
+      },
+      {
+        productId: 2,
+        quantity: 50,
+      },
+    ];
+
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(salesService, "updateSale").resolves({
+      code: 200,
+      result: responseOk,
+    });
+  });
+
+  after(async () => {
+    salesService.updateSale.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 200", async () => {
+      await salesController.updateSale(req, res);
+
+      expect(res.status.calledWith(200)).to.be.equal(true);
+    });
+  });
+});
