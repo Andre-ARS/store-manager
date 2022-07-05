@@ -161,3 +161,35 @@ describe('Tests the function exclude in controllers', () => {
     });
   });
 });
+
+describe("Tests the function findByName in controllers", () => {
+  const req = {};
+  const res = {};
+
+  before(() => {
+    const responseOk = [
+      { id: 2, name: "Traje de encolhimento" },
+    ];
+
+    req.query = 'Traje' 
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+
+    sinon.stub(productsService, "findByName").resolves({
+      code: 200,
+      result: responseOk,
+    });
+  });
+
+  after(async () => {
+    productsService.findByName.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns the status code 200", async () => {
+      await productsController.findByName(req, res);
+
+      expect(res.status.calledWith(200)).to.be.equal(true);
+    });
+  });
+});
