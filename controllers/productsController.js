@@ -37,4 +37,19 @@ const exclude = async (req, res) => {
   res.status(code).json(result);
 };
 
-module.exports = { getAll, getById, create, update, exclude };
+const findByName = async (req, res) => {
+  const { q } = req.query;
+
+  const { code, result } = await productsService.findByName(q);
+
+  res.status(code).json(result);
+};
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  exclude,
+  findByName,
+};
