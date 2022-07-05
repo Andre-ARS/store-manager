@@ -45,6 +45,13 @@ const excludeSale = async (id) => {
 
 const updateSale = async (id, changes) => {
   const sale = await salesModel.getSaleById(id);
+  const products = await productsModel.getAll();
+  const productIds = products.map(({ id: productId }) => productId);
+
+  if (await isValid(changes, productIds)) {
+    const response = await isValid(changes, productIds);
+    return response;
+  }
 
   if (sale.length < 1) {
     return { code: 404, result: { message: 'Sale not found' } };
