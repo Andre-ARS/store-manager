@@ -54,4 +54,20 @@ const exclude = async (id) => {
   return affectedRows;
 };
 
-module.exports = { getAll, getById, create, update, exclude };
+const findByName = async (name) => {
+  const query = `SELECT * FROM StoreManager.products
+  WHERE name LIKE CONCAT ('%', ?, '%')`;
+
+  const [result] = await connection.execute(query, [name]);
+
+  return result;
+};
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  exclude,
+  findByName,
+};
