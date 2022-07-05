@@ -65,4 +65,17 @@ const exclude = async (id) => {
   return { code: 204 };
 };
 
-module.exports = { getAll, getById, create, update, exclude };
+const findByName = async (name) => {
+  const finded = await productsModel.findByName(name);
+
+  return { code: 200, result: finded };
+};
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+  exclude,
+  findByName,
+};
