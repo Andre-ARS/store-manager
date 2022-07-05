@@ -109,3 +109,28 @@ describe("Tests the function exclude in models", () => {
     });
   });
 });
+
+describe("Tests the function findByName in models", () => {
+  before(async () => {
+    const execute = [
+      [
+        { id: 1, name: "Martelo de Thor" },
+      ],
+    ];
+
+    sinon.stub(connection, "execute").resolves(execute);
+  });
+
+  after(async () => {
+    connection.execute.restore();
+  });
+
+  describe("Once succedes", () => {
+    it("Returns an array with the right product", async () => {
+      const response = await productsModel.findByName('Martelo');
+
+      expect(response).to.be.a("array");
+      expect(response[0].name).to.include("Martelo");
+    });
+  });
+});
