@@ -1,0 +1,534 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Store Manager",
+    "description": "API de um CRUD de vendas e produtos"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Products",
+      "description": "Products Endpoints"
+    },
+    {
+      "name": "Sales",
+      "description": "Sales Endpoints"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/products/": {
+      "get": {
+        "description": "Retorna todos os produtos",
+        "tags": ["Products"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": { "$ref": "#/definitions/GetAllProducts" }
+          }
+        }
+      },
+      "post": {
+        "description": "Adiciona um novo produto",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Martelo de Thor"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": { "$ref": "#/definitions/Product" }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"name\" is required"
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"name\" length must be at least 5 characters long"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/search": {
+      "get": {
+        "description": "Retorna todos os produtos que tenham um certo termo no nome",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/GetAllProducts" }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "description": "Retorna um produto com base em seu id",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Product" }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "Product not found"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Edita o nome de um produto",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Product" }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"name\" is required"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "Product not found"
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"name\" length must be at least 5 characters long"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deleta um produto",
+        "tags": ["Products"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "Product not found"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sales/": {
+      "get": {
+        "description": "Retorna todas as vendas",
+        "tags": ["Sales"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": { "$ref": "#/definitions/GetAllSales" }
+          }
+        }
+      },
+      "post": {
+        "description": "Cria uma nova venda",
+        "tags": ["Sales"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/CreateSale" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": { "$ref": "#/definitions/CreateSaleReturn" }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"productId\" is required"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "Product not found"
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"quantity\" must be greater than or equal to 1"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sales/{id}": {
+      "get": {
+        "description": "Retorna um venda com base em seu id",
+        "tags": ["Sales"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": { "$ref": "#/definitions/SalesById" }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "Sale not found"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Edita uma venda",
+        "tags": ["Sales"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": { "$ref": "#/definitions/CreateSale" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": { "$ref": "#/definitions/CreateSaleReturn" }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"productId\" is required"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "Product not found"
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "\"quantity\" must be greater than or equal to 1"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deleta uma venda",
+        "tags": ["Sales"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type":"object",
+              "properties": "message",
+              "example": {
+                "message": "Sale not found"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Product": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "Martelo de Thor"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "GetAllProducts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 3
+          },
+          "name": {
+            "type": "string",
+            "example": "Escudo do Capitão América"
+          }
+        }
+      }
+    },
+    "Sales": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "date": {
+          "type": "string",
+          "example": "2022-08-25 02:58:17"
+        }
+      },
+      "required": [
+        "date"
+      ]
+    },
+    "SalesById": {
+      "type": "array",
+      "items": {
+        "type":"object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "example": "2022-08-25 02:58:17"
+          },
+          "productId": {
+            "type": "number",
+            "example": 1
+          },
+          "quantity": {
+            "type": "number",
+            "example": 5
+          }
+        }
+      },
+      "required": [
+        "date",
+        "productId",
+        "quantity"
+      ]
+    },
+    "GetAllSales": {
+      "type": "object",
+      "properties": {
+        "saleId": {
+          "type": "number",
+          "example": 1
+        },
+        "date": {
+          "type": "string",
+          "example": "2022-08-25T02:38:03.000Z"
+        },
+        "productId": {
+          "type": "number",
+          "example": 1
+        },
+        "quantity": {
+          "type": "number",
+          "example": 5
+        }
+      },
+      "required": [
+        "saleId",
+        "date",
+        "productId",
+        "quantity"
+      ]
+    },
+    "CreateSale": {
+      "type": "array",
+      "items": {
+        "type":"object",
+        "properties": {
+          "productId": {
+            "type": "number",
+            "example": 1
+          },
+          "quantity": {
+            "type": "number",
+            "example": 5
+          }
+        }
+      },
+      "required": [
+        "productId",
+        "quantity"
+      ]
+    },
+    "CreateSaleReturn": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "itemsSold": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties":{
+              "productId": {
+                "type": "number",
+                "example": 3
+              },
+              "quantity": {
+                "type": "number",
+                "example": 5
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "id",
+        "itemsSold"
+      ]
+    }
+  }
+}
