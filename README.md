@@ -34,7 +34,7 @@ npm install
 docker-compose up -d
 ```
 
-> Depois rode o container 
+> Depois rode o container
 
 ```bash
 docker exec -it store_manager sh 
@@ -53,3 +53,7 @@ npm start
 ```
 
 > Use o seu API client preferido e rode o endpoint na porta 3000 do seu localhost
+
+Url base da api rodando no vercel [store-manager-ars-api.vercel.app](https://store-manager-ars-api.vercel.app/)
+
+Visite a documentação no swagger [aqui](https://app.swaggerhub.com/apis/ANDRE360ARS/store-manager/1.0.0)
