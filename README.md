@@ -28,16 +28,28 @@ git clone git@github.com:Andre-ARS/store-manager.git
 npm install
 ```
 
-> Rode a API
+> Na raiz do projeto suba as imagens do docker
 
 ```bash
-npm start
+docker-compose up -d
 ```
 
-> Rode os testes
+> Depois rode o container 
+
+```bash
+docker exec -it store_manager sh 
+```
+
+> Dentro do container rode os testes
 
 ```shell
 npm test
+```
+
+> Dentro do container rode a API
+
+```bash
+npm start
 ```
 
 > Use o seu API client preferido e rode o endpoint na porta 3000 do seu localhost
