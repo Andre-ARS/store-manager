@@ -14,8 +14,8 @@
     "start": "node src/index.js",
     "debug": "nodemon --ignore coverage -L src/index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
-    "migration": "node -e \"require('./__tests__/_utils').runMigration()\"",
-    "seed": "node -e \"require('./__tests__/_utils').runSeed()\""
+    "migration": "node -e \"require('./utils').runMigration()\"",
+    "seed": "node -e \"require('./utils').runSeed()\""
   },
   "repository": {
     "type": "git",

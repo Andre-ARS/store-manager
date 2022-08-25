@@ -43,6 +43,7 @@
     "salesModel",
     "salesService",
     "salesController",
-    "helpers"
+    "helpers",
+    "Readme"
   ]
 }

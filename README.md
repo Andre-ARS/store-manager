@@ -46,6 +46,12 @@ docker exec -it store_manager sh
 npm test
 ```
 
+> Popule o Banco 
+
+```bash
+npm run migration && npm run seed
+```
+
 > Dentro do container rode a API
 
 ```bash
