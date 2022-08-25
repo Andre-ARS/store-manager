@@ -2,8 +2,8 @@ const { connection } = require('../helpers');
 
 const getAllSales = async () => {
   const query = `SELECT sp.sale_id AS saleId, s.date, sp.product_id AS productId, sp.quantity 
-  FROM StoreManager.sales s
-  INNER JOIN StoreManager.sales_products sp
+  FROM heroku_de963535be464a2.sales s
+  INNER JOIN heroku_de963535be464a2.sales_products sp
   ON s.id = sp.sale_id
   ORDER BY sp.sale_id, sp.product_id`;
 
@@ -14,8 +14,8 @@ const getAllSales = async () => {
 
 const getSaleById = async (id) => {
   const query = `SELECT s.date, sp.product_id AS productId, sp.quantity 
-  FROM StoreManager.sales s
-  INNER JOIN StoreManager.sales_products sp
+  FROM heroku_de963535be464a2.sales s
+  INNER JOIN heroku_de963535be464a2.sales_products sp
   ON s.id = sp.sale_id
   WHERE s.id = ?
   ORDER BY sp.product_id`;
@@ -26,12 +26,12 @@ const getSaleById = async (id) => {
 };
 
 const addSale = async (saleInfo) => {
-  const addSaleQuery = `INSERT INTO StoreManager.sales
+  const addSaleQuery = `INSERT INTO heroku_de963535be464a2.sales
   VALUES ()`;
 
   const [{ insertId }] = await connection.execute(addSaleQuery);
 
-  const query = `INSERT INTO StoreManager.sales_products
+  const query = `INSERT INTO heroku_de963535be464a2.sales_products
   VALUES (?, ?, ?)`;
 
   saleInfo.forEach(async ({ productId, quantity }) => {
@@ -45,7 +45,7 @@ const addSale = async (saleInfo) => {
 };
 
 const excludeSale = async (id) => {
-  const query = `DELETE FROM StoreManager.sales
+  const query = `DELETE FROM heroku_de963535be464a2.sales
   WHERE id = ?`;
 
   const [{ affectedRows }] = await connection.execute(query, [id]);
@@ -54,7 +54,7 @@ const excludeSale = async (id) => {
 };
 
 const updateSale = async (id, changes) => {
-  const query = `UPDATE StoreManager.sales_products
+  const query = `UPDATE heroku_de963535be464a2.sales_products
   SET quantity = ?
   WHERE sale_id = ?
   AND product_id = ?`;
