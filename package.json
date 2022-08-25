@@ -9,9 +9,9 @@
   },
   "scripts": {
     "test": "jest --config ./jest.config.js --runInBand --detectOpenHandles",
-    "test:mocha": "nyc --all --include models --include services --include controllers mocha tests/unit/**/*.js --exit",
-    "start": "node index.js",
-    "debug": "nodemon --ignore coverage -L index.js",
+    "test:mocha": "nyc --all --include models --include services --include controllers mocha src/tests/unit/**/*.js --exit",
+    "start": "node src/index.js",
+    "debug": "nodemon --ignore coverage -L src/index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
     "migration": "node -e \"require('./__tests__/_utils').runMigration()\"",
     "seed": "node -e \"require('./__tests__/_utils').runSeed()\""
