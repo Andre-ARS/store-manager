@@ -8,8 +8,9 @@
     "npm": ">=7.0.0"
   },
   "scripts": {
+    "swagger-autogen": "node swagger.js",
     "test": "jest --config ./jest.config.js --runInBand --detectOpenHandles",
-    "test:mocha": "nyc --all --include models --include services --include controllers mocha src/tests/unit/**/*.js --exit",
+    "test:mocha": "nyc --all --include models --include services --include controllers mocha tests/unit/**/*.js --exit",
     "start": "node src/index.js",
     "debug": "nodemon --ignore coverage -L src/index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx",
@@ -34,7 +35,9 @@
     "express-rescue": "^1.1.26",
     "joi": "^17.6.0",
     "mysql2": "^2.3.0",
-    "shelljs": "^0.8.5"
+    "shelljs": "^0.8.5",
+    "swagger-autogen": "^2.21.5",
+    "swagger-ui-express": "^4.5.0"
   },
   "devDependencies": {
     "chai": "^4.3.4",
