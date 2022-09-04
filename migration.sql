@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS heroku_de963535be464a2;
+DROP DATABASE IF EXISTS Store_Manager;
 
-CREATE DATABASE heroku_de963535be464a2;
+CREATE DATABASE Store_Manager;
 
-USE heroku_de963535be464a2;
+USE Store_Manager;
 
 CREATE TABLE products (
   id INT NOT NULL auto_increment,
